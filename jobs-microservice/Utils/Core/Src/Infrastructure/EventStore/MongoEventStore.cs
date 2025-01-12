@@ -1,9 +1,9 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace Application.Core
 {
-    public class MongoEventStore : IEventStore 
+    public class MongoEventStore : IEventStore
     {
         private readonly IMongoCollection<MongoEvent> _eventCollection;
 
@@ -16,19 +16,20 @@ namespace Application.Core
             var indexKeysDefinition = Builders<MongoEvent>.IndexKeys.Ascending(e => e.Stream);
             var indexModel = new CreateIndexModel<MongoEvent>(indexKeysDefinition);
             _eventCollection.Indexes.CreateOne(indexModel);
-
         }
 
         public async Task AppendEvents(List<DomainEvent> events)
         {
-
-            var mappedEvents = events.Select(e => new MongoEvent
-            {
-                Stream = e.PublisherId,
-                Type = e.Type,
-                Data = e.Context.ToBsonDocument(),
-                OcurredDate = e.OcurredDate
-            });
+            var mappedEvents = events.Select
+            (
+                e => new MongoEvent
+                (
+                    e.PublisherId,
+                    e.Type,
+                    JsonConvert.SerializeObject(e.Context, Formatting.Indented),
+                    e.OcurredDate
+                )
+            );
 
             await _eventCollection.InsertManyAsync(mappedEvents);
         }
