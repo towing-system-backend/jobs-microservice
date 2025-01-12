@@ -1,5 +1,5 @@
 ﻿using Job.Infrastructure;
-using jobs_microservice.Src.Infrastructure.Controllers.Dtos;
+using Order.Infrastructure;
 using RabbitMQ.Contracts;
 using System.Reflection;
 

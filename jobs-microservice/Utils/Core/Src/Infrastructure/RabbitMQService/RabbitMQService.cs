@@ -1,5 +1,4 @@
 ﻿using Application.Core;
-using jobs_microservice.Utils.Core.Src.Application.MesssageBrokerService;
 using MassTransit;
 using Newtonsoft.Json;
 using RabbitMQ.Contracts;
@@ -19,8 +18,7 @@ namespace Application.Core
                 @event.OcurredDate
             );
             
-            await _publishEndpoint.Publish(eventType);
-            
+            await _publishEndpoint.Publish(eventType);         
         }
     }
 }

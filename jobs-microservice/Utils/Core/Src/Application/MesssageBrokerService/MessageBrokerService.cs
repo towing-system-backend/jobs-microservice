@@ -1,7 +1,5 @@
-﻿using Application.Core;
-using RabbitMQ.Contracts;
-
-namespace jobs_microservice.Utils.Core.Src.Application.MesssageBrokerService
+﻿using RabbitMQ.Contracts;
+namespace Application.Core
 {
     public interface IMessageBrokerService
     {

@@ -1,14 +1,15 @@
-﻿using jobs_microservice.Src.Infrastructure.Controllers.Dtos;
+﻿using Order.Infrastructure;
 
 namespace RabbitMQ.Contracts
 {
-    public class UpdateOrderDtoCreator : DtoCreator<UpdateOrder, UpdateOrderDto>
+    public class EventOrderToAcceptDtoCreator : DtoCreator<EventOrderToAccept, OrderToAcceptDto>
     {
-        public override UpdateOrderDto CreateDto(UpdateOrder message)
+        public override OrderToAcceptDto CreateDto(EventOrderToAccept message)
         {
-            return new UpdateOrderDto(
-                message.PublisherId,
-                message.Status
+            return new OrderToAcceptDto(
+                message.OrderId,
+                message.TowDriverId,
+                message.DeviceToken
             );
         }
     }

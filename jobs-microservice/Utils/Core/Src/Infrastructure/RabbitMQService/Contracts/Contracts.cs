@@ -9,9 +9,11 @@
         DateTime OcurredDate
     );
 
-    public record UpdateOrder(
-        string PublisherId,
-        string Status
+    public record EventOrderToAccept(
+        Guid OrderId,
+        string? TowDriverId,
+        string? DeviceToken,
+        DateTime UpdatedAt
     ) : IRabbitMQMessage;
 
     public record TowDriverResponse(

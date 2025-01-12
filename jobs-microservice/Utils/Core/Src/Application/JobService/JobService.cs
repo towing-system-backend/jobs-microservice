@@ -1,10 +1,10 @@
-﻿using jobs_microservice.Src.Infrastructure.Controllers.Dtos;
+﻿using Order.Infrastructure;
 
-namespace jobs_microservice.Utils.Core.Src.Application.JobService
+namespace Application.Core
 {
     public interface IJobService
     {
-        void ProcessOrderStatus(UpdateOrderDto dto);
+        void SetTimerForNotificationSent(string orderId);
     }
 }
 
