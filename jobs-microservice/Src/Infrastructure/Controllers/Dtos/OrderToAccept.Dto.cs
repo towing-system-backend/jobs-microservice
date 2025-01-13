@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Order.Infrastructure
+namespace Job.Infrastructure
 {
     public interface IDto { }
 

@@ -1,8 +1,6 @@
 ﻿using Job.Infrastructure;
-using Order.Infrastructure;
 using RabbitMQ.Contracts;
 using System.Reflection;
-
 
 namespace Application.Core
 {
@@ -12,6 +10,7 @@ namespace Application.Core
 
         public Task ProcessMessage(IRabbitMQMessage message)
         {
+
             using var scope = _serviceProvider.CreateScope();
             var controller = scope.ServiceProvider.GetRequiredService<JobController>();
             var method = controller.GetType().GetMethod(
@@ -21,7 +20,6 @@ namespace Application.Core
             if (method == null) return Task.FromResult(false);
             var dto = DtoCreator<IRabbitMQMessage, IDto>.GetDto(message);
             method.Invoke(controller, new object[] { dto });
-
             return Task.CompletedTask;
         }
     }

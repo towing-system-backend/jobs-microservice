@@ -1,4 +1,4 @@
-﻿using Order.Infrastructure;
+﻿using Job.Infrastructure;
 
 namespace RabbitMQ.Contracts
 {

@@ -4,10 +4,8 @@ namespace Application.Core
 {
     public class FirebaseNotificationsService : INotificationService
     {
-
         public async Task SendNotification(string deviceToken, string orderId)
         {
-            Console.WriteLine($"deviceToken: {deviceToken}");
             var message = new Message
             {
                 Token = deviceToken,
@@ -19,8 +17,8 @@ namespace Application.Core
                 Data = new Dictionary<string, string>
                 {
                     { "order_id", orderId },
-                    { "action_accept", "Aceptar" },
-                    { "action_reject", "Rechazar" }
+                    { "category", "order" }, 
+                    { "click_action", "FLUTTER_NOTIFICATION_CLICK" }
                 },
                 Android = new AndroidConfig
                 {
@@ -29,7 +27,8 @@ namespace Application.Core
                     {
                         Title = "Nueva solicitud de servicio",
                         Body = "¿Deseas aceptar o rechazar esta solicitud?",
-                        ChannelId = "default_channel"
+                        ChannelId = "default",
+                        ClickAction = "FLUTTER_NOTIFICATION_CLICK"
                     }
                 }
             };

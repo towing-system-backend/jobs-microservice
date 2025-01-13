@@ -1,33 +1,42 @@
 ﻿using Hangfire;
+using Jobs.Application;
 using RabbitMQ.Contracts;
-using System.Collections.Concurrent;
-using Application.Core;
 
 namespace Application.Core
 {
-    public class JobService(IMessageBrokerService messsageBrokerService) : IJobService
+    public class JobService
+    (
+        IMessageBrokerService messsageBrokerService,
+        IOrderRepository orderRepository
+    ) : IJobService
     {
         private readonly IMessageBrokerService _messsageBrokerService = messsageBrokerService;
+        private readonly IOrderRepository _orderRepository = orderRepository;
 
         public void SetTimerForNotificationSent(string orderId)
         {
             Hangfire.BackgroundJob.Schedule(
                 () => DriverRejected(orderId),
-                TimeSpan.FromMinutes(1)
+                TimeSpan.FromMinutes(6)
             );
         }
 
         public async Task DriverRejected(string orderId)
         {
-            var message = new TowDriverResponse(orderId, "Rejected");
-
-            await _messsageBrokerService.Publish(
-                new EventType(
-                    orderId,
-                    "TowDriverResponse",
-                    message,
-                    DateTime.UtcNow
-                ));
+            var statusChanged = await _orderRepository.FindOrderById( orderId );
+            if (statusChanged.Equals("ToAccept"))
+            {
+                var message = new TowDriverResponse(orderId, "Rejected");
+                await _messsageBrokerService.Publish(
+                    new EventType(
+                        orderId,
+                        "TowDriverResponse",
+                        message,
+                        DateTime.UtcNow
+                    )
+                );
+            }
+            return;
         }
     }
 }

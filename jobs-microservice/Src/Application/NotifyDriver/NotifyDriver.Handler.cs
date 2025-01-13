@@ -12,7 +12,8 @@ namespace Jobs.Application
         private readonly INotificationService _notificationService = notificationService;
         public async Task<Result<NotifyDriverResponse>> Execute(NotifyDriverCommand data)
         {
-            await _notificationService.SendNotification(data.DeviceToken, data.OrderId.ToString());
+            if(data.DeviceToken != "null") 
+                await _notificationService.SendNotification(data.DeviceToken, data.OrderId.ToString());
             _jobService.SetTimerForNotificationSent(data.OrderId.ToString());
             return Result<NotifyDriverResponse>.MakeSuccess(new NotifyDriverResponse());
         }

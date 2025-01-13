@@ -16,6 +16,7 @@
         DateTime UpdatedAt
     ) : IRabbitMQMessage;
 
+   
     public record TowDriverResponse(
         string OrderId,
         string Status

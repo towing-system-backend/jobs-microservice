@@ -6,8 +6,10 @@ using Hangfire.Mongo;
 using Hangfire.Mongo.Migration.Strategies;
 using Hangfire.Mongo.Migration.Strategies.Backup;
 using Job.Infrastructure;
+using Jobs.Application;
 using MassTransit;
 using Microsoft.IdentityModel.Tokens;
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Text;
 
@@ -21,10 +23,10 @@ namespace Jobs.Extensions
             {
                 Credential = GoogleCredential.FromFile(Environment.GetEnvironmentVariable("FIREBASE-SERVICES"))
             });
-
             services.AddSingleton<MongoEventStore>();
             services.AddSingleton<INotificationService, FirebaseNotificationsService>();
             services.AddScoped<IEventStore, MongoEventStore>();
+            services.AddScoped<IOrderRepository, MongoOrderServices>();
             services.AddScoped<IdService<string>, GuidGenerator>();
             services.AddScoped<IMessageBrokerService, RabbitMQService>();
             services.AddScoped<IJobService, JobService>();
@@ -112,7 +114,5 @@ namespace Jobs.Extensions
                 c.RoutePrefix = string.Empty;
             });
         }
-
-
     }
 }
